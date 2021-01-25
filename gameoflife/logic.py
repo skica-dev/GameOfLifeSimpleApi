@@ -1,5 +1,5 @@
 import random
-WIELKOSC = 8
+# WIELKOSC = 8
 SASIADOW_ABY_CIAZA = 3
 SASIADOW_ABY_NIE_UMRZEC = (2, 3)
 
@@ -19,9 +19,10 @@ def policz_sasiadow(plansza, x, y):
 
 
 def przelicz_plansze(plansza):
-    plansza_nowa = [[False for _ in range(WIELKOSC)] for _ in range(WIELKOSC)]
-    for rzad_num in range(WIELKOSC):
-        for komorka_num in range(WIELKOSC):
+    wielkosc = len(plansza)
+    plansza_nowa = [[False for _ in range(wielkosc)] for _ in range(wielkosc)]
+    for rzad_num in range(wielkosc):
+        for komorka_num in range(wielkosc):
             liczba_sasiadow = policz_sasiadow(plansza, rzad_num, komorka_num)
             wartosc_komorki = plansza[rzad_num][komorka_num]
             if not wartosc_komorki and liczba_sasiadow == SASIADOW_ABY_CIAZA:

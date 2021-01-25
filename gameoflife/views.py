@@ -34,4 +34,4 @@ def przelicz_normalnie(request):
     wyswietl_plansze(plansza)
     przeliczona = przelicz_plansze(plansza)
     wyswietl_plansze(przeliczona)
-    return JsonResponse({"przeliczona_plansza":przeliczona,})
+    return JsonResponse({"rozmiar":len(przeliczona), "przeliczona_plansza":przeliczona,})
