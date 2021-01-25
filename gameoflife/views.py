@@ -17,7 +17,13 @@ def przelicz_z_binarnego(request):
     wyswietl_plansze(plansza)
     przeliczona = przelicz_plansze(plansza)
     wyswietl_plansze(przeliczona)
-    return JsonResponse({"przeliczona_plansza":przeliczona,})
+    przeliczona_bin = []
+    for line in przeliczona:
+        line_bin = int("".join([str(int(x)) for x in line]))
+        line_decimal = bin(line_bin)
+        przeliczona_bin.append(line_decimal)
+    print(przeliczona_bin)
+    return JsonResponse({"rozmiar":len(przeliczona), "przeliczona_plansza-binarnie":przeliczona_bin,})
 
 def przelicz_normalnie(request):
     post_data = json.loads(request.body)
