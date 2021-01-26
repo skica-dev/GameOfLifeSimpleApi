@@ -13,14 +13,14 @@ def przelicz_z_binarnego(request):
                 plansza_line.append(False)
             else:
                 plansza_line.append(True)
-            plansza.append(plansza_line)
+        plansza.append(plansza_line)
     wyswietl_plansze(plansza)
     przeliczona = przelicz_plansze(plansza)
     wyswietl_plansze(przeliczona)
     przeliczona_bin = []
     for line in przeliczona:
-        line_bin = int("".join([str(int(x)) for x in line]))
-        line_decimal = bin(line_bin)
+        line_bin = "".join([str(int(x)) for x in line])
+        line_decimal = int(line_bin,2)
         przeliczona_bin.append(line_decimal)
     print(przeliczona_bin)
     return JsonResponse({"rozmiar":len(przeliczona), "przeliczona_plansza-binarnie":przeliczona_bin,})
