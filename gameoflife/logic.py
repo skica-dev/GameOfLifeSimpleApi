@@ -20,9 +20,9 @@ def policz_sasiadow(plansza, x, y):
 
 def przelicz_plansze(plansza):
     wielkosc = len(plansza)
-    plansza_nowa = [[False for _ in range(wielkosc)] for _ in range(wielkosc)]
+    plansza_nowa = [[False for _ in range(len(plansza[0]))] for _ in range(wielkosc)]
     for rzad_num in range(wielkosc):
-        for komorka_num in range(wielkosc):
+        for komorka_num in range(len(plansza[0])):
             liczba_sasiadow = policz_sasiadow(plansza, rzad_num, komorka_num)
             wartosc_komorki = plansza[rzad_num][komorka_num]
             if not wartosc_komorki and liczba_sasiadow == SASIADOW_ABY_CIAZA:
