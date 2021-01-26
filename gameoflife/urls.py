@@ -19,6 +19,7 @@ from django.urls import path
 from gameoflife import views
 
 urlpatterns = [
+    path('', views.homepage),
     path('przelicz', views.przelicz_normalnie),
     path('przelicz-z-binarnego', views.przelicz_z_binarnego),
 ]

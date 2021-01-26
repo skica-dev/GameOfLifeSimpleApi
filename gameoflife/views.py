@@ -1,6 +1,10 @@
 from django.http import JsonResponse
 import json
+
+from django.shortcuts import render
+
 from .logic import przelicz_plansze, wyswietl_plansze
+
 
 def przelicz_z_binarnego(request):
     post_data = json.loads(request.body)
@@ -20,10 +24,11 @@ def przelicz_z_binarnego(request):
     przeliczona_bin = []
     for line in przeliczona:
         line_bin = "".join([str(int(x)) for x in line])
-        line_decimal = int(line_bin,2)
+        line_decimal = int(line_bin, 2)
         przeliczona_bin.append(line_decimal)
     print(przeliczona_bin)
-    return JsonResponse({"rozmiar":len(przeliczona), "przeliczona_plansza-binarnie":przeliczona_bin,})
+    return JsonResponse({"rozmiar": len(przeliczona), "przeliczona_plansza-binarnie": przeliczona_bin, })
+
 
 def przelicz_normalnie(request):
     post_data = json.loads(request.body)
@@ -40,4 +45,8 @@ def przelicz_normalnie(request):
     # wyswietl_plansze(plansza)
     przeliczona = przelicz_plansze(plansza)
     # wyswietl_plansze(przeliczona)
-    return JsonResponse({"rozmiar":len(przeliczona), "przeliczona_plansza":przeliczona,})
+    return JsonResponse({"rozmiar": len(przeliczona), "przeliczona_plansza": przeliczona, })
+
+
+def homepage(request):
+    return render(request, "index.html")
