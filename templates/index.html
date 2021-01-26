@@ -1,105 +1,111 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
+<head>
     <meta charset="utf-8">
     <title></title>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <style>
-    td {
-      padding: 0;
-    }
-    .cell {
-      width: 20px;
-      height: 20px;
-      background: #eee;
-    }
-    .cell.enabled {
-      background: #afa;
-    }
-    #sidebar {
-      height: 160px;
-      width: 250px;
-      position: fixed;
-      z-index: 1;
-      top: 0;
-      right: 0;
-      background-color: #efefef;
-      padding: 20px;
-    }
-    #sidebar button {
-      width: 100%;
-    }
-    </style>
-  </head>
-  <body>
-    <table>
+        td {
+            padding: 0;
+        }
 
-    </table>
-    <div id="sidebar">
-      <button id="next" name="next">Następna generacja</button>
-      <button id="start" name="start">Rozpocznij powtarzanie</button>
-      <button id="stop" name="stop" disabled>Zatrzymaj powtarzanie</button>
-    </div>
-    <script>
-      repeatLoop = null
-      for(i = 0; i<40; i++) {
+        .cell {
+            width: 20px;
+            height: 20px;
+            background: #eee;
+        }
+
+        .cell.enabled {
+            background: #afa;
+        }
+
+        #sidebar {
+            height: 160px;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            background-color: #efefef;
+            padding: 20px;
+        }
+
+        #sidebar button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<table>
+
+</table>
+<div id="sidebar">
+    <button id="next" name="next">Następna generacja</button>
+    <button id="start" name="start">Rozpocznij powtarzanie</button>
+    <button id="stop" name="stop" disabled>Zatrzymaj powtarzanie</button>
+</div>
+<script>
+    repeatLoop = null
+    for (i = 0; i < 40; i++) {
         $('<tr></tr>').appendTo('table')
-      }
-      for(i = 0; i<60; i++) {
+    }
+    for (i = 0; i < 60; i++) {
         $('<td></td>').appendTo('tr')
-      }
-      $('<div class="cell"></div>').appendTo('td')
-      mouseisdown = false
-      document.body.onmousedown = () => mouseisdown = true
-      document.body.onmouseup = () => mouseisdown = false
-      $('.cell').on("mousedown", function(e) {
+    }
+    $('<div class="cell"></div>').appendTo('td')
+    mouseisdown = false
+    document.body.onmousedown = () => mouseisdown = true
+    document.body.onmouseup = () => mouseisdown = false
+    $('.cell').on("mousedown", function (e) {
         this.classList.toggle("enabled")
-      })
-      $('.cell').on("mouseover", function(e) {
+    })
+    $('.cell').on("mouseover", function (e) {
         if (mouseisdown)
-          this.classList.toggle("enabled")
-      })
-      async function gen(dane) {
-        let a = await $.post( "https://skica-gol.herokuapp.com/przelicz", JSON.stringify({"plansza": dane}))
+            this.classList.toggle("enabled")
+    })
+
+    async function gen(dane) {
+        let a = await $.post("/przelicz", JSON.stringify({"plansza": dane}))
         return a["przeliczona_plansza"]
-      }
-      async function step(){
+    }
+
+    async function step() {
         let dane = []
-        $("tr").each(function() {
-          let subdane = []
-          $(this).find("td .cell").each(function() {
-            subdane.push(this.classList.contains("enabled"))
-          })
-          dane.push(subdane)
+        $("tr").each(function () {
+            let subdane = []
+            $(this).find("td .cell").each(function () {
+                subdane.push(this.classList.contains("enabled"))
+            })
+            dane.push(subdane)
         })
         let nowedane = await gen(dane)
-        $("tr").each(function(i) {
-          let subdane = nowedane[i]
-          $(this).find("td .cell").each(function(j) {
-            this.classList.remove("enabled");
-            if(subdane[j])
-              this.classList.add("enabled")
-          })
+        $("tr").each(function (i) {
+            let subdane = nowedane[i]
+            $(this).find("td .cell").each(function (j) {
+                this.classList.remove("enabled");
+                if (subdane[j])
+                    this.classList.add("enabled")
+            })
         })
-      }
+    }
 
-      $('#next').on("click", step)
-      $("#start").on("click", function() {
+    $('#next').on("click", step)
+    $("#start").on("click", function () {
         repeatLoop = window.setInterval(step, 500);
         $("#next").attr("disabled", true)
         $("#start").attr("disabled", true)
         $("#stop").attr("disabled", false)
-      })
-      $("#stop").on("click", function() {
+    })
+    $("#stop").on("click", function () {
         clearInterval(repeatLoop)
         repeatLoop = null
         $("#next").attr("disabled", false)
         $("#start").attr("disabled", false)
         $("#stop").attr("disabled", true)
-      })
-      document.addEventListener("dragstart", function( event ) {
+    })
+    document.addEventListener("dragstart", function (event) {
         event.preventDefault()
-      })
-    </script>
-  </body>
+    })
+</script>
+</body>
 </html>
