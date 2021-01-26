@@ -27,7 +27,7 @@ SECRET_KEY = 't5ru$1c8b!glz*g_%ioqj-_l!k$zfnvk1*ycfd4i692s+7byc2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["skica-gol.herokuapp.com"]
 
 
 # Application definition
