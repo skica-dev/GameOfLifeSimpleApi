@@ -37,11 +37,11 @@
     </table>
     <div id="sidebar">
       <button id="next" name="next">Następna generacja</button>
-      <input type="checkbox" id="repeat" name="repeat"><label for="repeat">Powtarzaj</label>
+      <button id="start" name="start">Rozpocznij powtarzanie</button>
+      <button id="stop" name="stop" disabled>Zatrzymaj powtarzanie</button>
     </div>
     <script>
       repeatLoop = null
-      couldrepeat = false
       for(i = 0; i<40; i++) {
         $('<tr></tr>').appendTo('table')
       }
@@ -64,7 +64,6 @@
         return a["przeliczona_plansza"]
       }
       async function step(){
-        console.log(couldrepeat)
         let dane = []
         $("tr").each(function() {
           let subdane = []
@@ -84,24 +83,22 @@
         })
       }
 
-      $('#next').on("click", function(e) {
-        if (couldrepeat){
-          if (repeatLoop == null)
-            repeatLoop = window.setInterval(step, 1000);
-          else {
-            clearInterval(repeatLoop)
-            repeatLoop = null
-          }
-        }
-        else
-          step()
+      $('#next').on("click", step)
+      $("#start").on("click", function() {
+        repeatLoop = window.setInterval(step, 500);
+        $("#next").attr("disabled", true)
+        $("#start").attr("disabled", true)
+        $("#stop").attr("disabled", false)
       })
-      $("#repeat").on("change", function() {
-        couldrepeat = !couldrepeat
-        if(!couldrepeat){
-          clearInterval(repeatLoop)
-          repeatLoop = null
-        }
+      $("#stop").on("click", function() {
+        clearInterval(repeatLoop)
+        repeatLoop = null
+        $("#next").attr("disabled", false)
+        $("#start").attr("disabled", false)
+        $("#stop").attr("disabled", true)
+      })
+      document.addEventListener("dragstart", function( event ) {
+        event.preventDefault()
       })
     </script>
   </body>
